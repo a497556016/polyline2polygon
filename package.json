@@ -1,0 +1,27 @@
+{
+  "name": "polyline2polygon",
+  "version": "1.0.0",
+  "description": "polyline2polygon",
+  "main": "index.js",
+  "dependencies": {
+    "webpack": "^4.29.6"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/a497556016/polyline2polygon.git"
+  },
+  "keywords": [
+    "polyline",
+    "polygon"
+  ],
+  "author": "heshaowei",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/a497556016/polyline2polygon/issues"
+  },
+  "homepage": "https://github.com/a497556016/polyline2polygon#readme"
+}
