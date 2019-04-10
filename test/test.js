@@ -5,6 +5,7 @@ var lib = require('../dist/main');
 describe('Test', () => {
     describe('First', () => {
         it('are you ok?', () => {
+            console.log(lib)
             const polygon = lib.polyline2polygon.fromArrPoints([
                 [
                     114.05572414398193,

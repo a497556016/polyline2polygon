@@ -1,6 +1,11 @@
-import calculation from './calculation'
+import Calculation from './calculation'
 
-function fromLinePoints(points, width = 5) {
+
+function Polyline2polygon() {
+    this.calculation = new Calculation();
+};
+
+Polyline2polygon.prototype.fromLinePoints = function (points, width = 5) {
     width = width / 100000;
     const polygons = [];
     points.forEach((point, i) => {
@@ -9,7 +14,7 @@ function fromLinePoints(points, width = 5) {
         }
         const prev = points[i - 1];
 
-        const angle = calculation.angleR(prev, point);
+        const angle = this.calculation.angleR(prev, point);
         // console.log(`angle = ${angle}, r = ${angle * 180 / Math.PI} deg`);
 
         const sin = Math.sin(angle);
@@ -38,10 +43,10 @@ function fromLinePoints(points, width = 5) {
             }
         }*/
         let poly = [
-                calculation.addPoint(prev, {x: a * width * sin, y: b * width * cos}),
-                calculation.addPoint(point, {x: a * width * sin, y: b * width * cos}),
-                calculation.addPoint(point, {x: -a * width * sin, y: -b * width * cos}),
-                calculation.addPoint(prev, {x: -a * width * sin, y: -b * width * cos}),
+                this.calculation.addPoint(prev, {x: a * width * sin, y: b * width * cos}),
+                this.calculation.addPoint(point, {x: a * width * sin, y: b * width * cos}),
+                this.calculation.addPoint(point, {x: -a * width * sin, y: -b * width * cos}),
+                this.calculation.addPoint(prev, {x: -a * width * sin, y: -b * width * cos}),
             ]
             //.map(roundPoint)
         ;
@@ -62,10 +67,10 @@ function fromLinePoints(points, width = 5) {
         const poly2 = polygon;
 
         // 内边交点
-        const middle1 = calculation.intersection(poly1[0], poly1[1], poly2[0], poly2[1]);
+        const middle1 = this.calculation.intersection(poly1[0], poly1[1], poly2[0], poly2[1]);
         inside.push(middle1);
         // 外边交点
-        const middle2 = calculation.intersection(poly1[2], poly1[3], poly2[2], poly2[3]);
+        const middle2 = this.calculation.intersection(poly1[2], poly1[3], poly2[2], poly2[3]);
         outside.push(middle2);
 
         //终点
@@ -83,54 +88,18 @@ function fromLinePoints(points, width = 5) {
     return lines;
 }
 
-function fromArrPoints(arrPoints) {
+Polyline2polygon.prototype.arrToObjPoints = function (arrPoints) {
     const points = arrPoints.map(p => {
-        return {x: p[0], y: p[1], z: 0};
+        return {x: p[0], y: p[1], z: p.length == 3?p[2]:0};
     });
-    const paths = lineToPolygons(points);
+    return points;
+}
+
+Polyline2polygon.prototype.fromArrPoints = function (arrPoints, width = 5) {
+    const points = this.arrToObjPoints(arrPoints);
+    const paths = this.fromLinePoints(points, width);
 
     return paths;
 }
 
-
-/**
- * 过滤多余的坐标点
- * @param paths
- * @returns {*}
- */
-function filterPaths(paths){
-    if(paths.length <= 2){
-        return paths;
-    }
-    const filtered = [];
-
-    let index = 0;
-
-    function compute(i){
-        if(index+i+1>paths.length-1){
-            filtered.push(paths[index]);
-            filtered.push(paths[paths.length-1])
-            return;
-        }
-
-        let path1 = paths[index], path2 = paths[index+i], path3 = paths[index+i+1];
-        if(calculation.compare(path1, path2, path3)){//如果夹角很大，近似为直线
-            compute(++i);
-        }else{
-            index = index + i;
-            filtered.push(path1);
-            compute(1);
-        }
-    }
-
-    compute(1);
-
-    return filtered;
-}
-
-
-export default {
-    filterPaths,
-    fromLinePoints,
-    fromArrPoints
-}
+export default Polyline2polygon

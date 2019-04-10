@@ -1,3 +1,3 @@
-import polyline2polygon from './lib/polyline2polygon'
+import Polyline2polygon from './lib/polyline2polygon'
 
-exports.polyline2polygon = polyline2polygon;
+export default new Polyline2polygon();
