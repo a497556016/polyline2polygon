@@ -3,12 +3,15 @@
   "version": "1.0.0",
   "description": "polyline2polygon",
   "main": "index.js",
-  "dependencies": {
-    "webpack": "^4.29.6"
+  "dependencies": {},
+  "devDependencies": {
+    "mocha": "^6.1.2",
+    "webpack": "^4.29.6",
+    "webpack-cli": "^3.3.0"
   },
-  "devDependencies": {},
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha",
+    "build": "npx webpack"
   },
   "repository": {
     "type": "git",
