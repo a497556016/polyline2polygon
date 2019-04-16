@@ -6,7 +6,11 @@ function Polyline2polygon() {
 };
 
 Polyline2polygon.prototype.fromLinePoints = function (points, width = 5) {
-    width = width / 100000;
+    //将宽度转换为经纬度偏移值
+    var earthRadius = 6371008.8; //地球半径
+    var degrees = (width/earthRadius) % (2 * Math.PI);
+    width = degrees * 180 / Math.PI;
+
     const polygons = [];
     points.forEach((point, i) => {
         if (i === 0) {
@@ -61,6 +65,12 @@ Polyline2polygon.prototype.fromLinePoints = function (points, width = 5) {
         if(i == 0) {
             inside.push(polygon[0]);
             outside.push(polygon[3]);
+
+            //当仅有一条线段时
+            if(polygons.length == 1) {
+                inside.push(polygon[1]);
+                outside.push(polygon[2]);
+            }
             return;
         }
         const poly1 = polygons[i-1];
